@@ -56,7 +56,6 @@ public class DriversController {
 	@RequestMapping(value="/licenses", method=RequestMethod.POST)
 	public String createLicense(@Valid @ModelAttribute("license") License license, BindingResult result) {
 		if (result.hasErrors()) {
-			
 			return "drivers/newLicense.jsp";
 		}
 		else {
