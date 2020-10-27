@@ -10,7 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="licenses")
@@ -19,6 +24,7 @@ public class License {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String number;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expirationDate;
 	private String state;
 	@Column(updatable=false)
@@ -88,5 +94,18 @@ public class License {
 		this.person = person;
 	}
 	
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+	}
 	
+	@PostPersist
+	protected void afterCreate() {
+		this.number = String.format("%06d", this.id);		
+	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
+	}
 }

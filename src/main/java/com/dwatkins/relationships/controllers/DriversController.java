@@ -31,7 +31,7 @@ public class DriversController {
 	}
 	
 	@RequestMapping("/people")
-	public String newPerson() {
+	public String newPerson(@ModelAttribute("person") Person person) {
 		return "drivers/newPerson.jsp";
 	}
 	
@@ -47,15 +47,17 @@ public class DriversController {
 	}
 	
 	@RequestMapping("/licenses")
-	public String newLicense(Model model) {
+	public String newLicense(@ModelAttribute("license") License license, Model model) {
 		List<Person> eligiblePeople = driverService.peopleWithoutLicense();
 		model.addAttribute("eligibles", eligiblePeople);
 		return "drivers/newLicense.jsp";
 	}
 	
 	@RequestMapping(value="/licenses", method=RequestMethod.POST)
-	public String createLicense(@Valid @ModelAttribute("license") License license, BindingResult result) {
+	public String createLicense(@Valid @ModelAttribute("license") License license, BindingResult result, Model model) {
 		if (result.hasErrors()) {
+			List<Person> eligiblePeople = driverService.peopleWithoutLicense();
+			model.addAttribute("eligibles", eligiblePeople);
 			return "drivers/newLicense.jsp";
 		}
 		else {

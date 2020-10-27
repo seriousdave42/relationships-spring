@@ -12,9 +12,9 @@ import com.dwatkins.relationships.models.Person;
 public interface PersonRepository extends CrudRepository<Person, Long> {
 	List<Person> findAll();
 	
-	@Query("SELECT p, l FROM Person p JOIN p.license l")
+	@Query("SELECT p, l FROM Person p LEFT JOIN p.license l")
 	List<Object[]> joinPeopleAndLicenses();
 	
-	@Query("SELECT p FROM Person p WHERE p.license IS NULL")
+	@Query("SELECT p FROM Person p LEFT JOIN p.license l WHERE l.id IS NULL")
 	List<Person> peopleWithoutLicense();
 }

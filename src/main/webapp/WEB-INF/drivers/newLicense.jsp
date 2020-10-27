@@ -16,7 +16,7 @@
 			<form:label path="person">Driver</form:label>
 			<form:errors path="person"/>
 			<form:select path="person">
-				<c:forEach items=${"eligibles"} var="driver">
+				<c:forEach items="${eligibles}" var="driver">
 					<form:option value="${driver}">${driver.firstName} ${driver.lastName}</form:option>
 				</c:forEach>
 			</form:select>
